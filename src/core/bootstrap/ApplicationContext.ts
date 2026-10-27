@@ -17,6 +17,7 @@ export default class ApplicationContext {
             context.container.register(bean);
         }
 
+        context.container.registerInstance(ApplicationContext, context);
         context.container.init();
 
         return context;

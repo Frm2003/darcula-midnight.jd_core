@@ -1,4 +1,4 @@
-import { BeanDefinition, BeanScope, BeanStereotype, Factory, Token } from "../types/index.js";
+import { BeanDefinition, BeanScope, BeanStereotype, DefaultClass, Factory, Token } from "../types/index.js";
 import ScopedProxyFactory from "./ScopedProxyFactory.js";
 
 export default class Container {
@@ -55,6 +55,17 @@ export default class Container {
 
     public register(bean: BeanDefinition): void {
         this.definitions.set(bean.token, bean);
+    }
+
+    public registerInstance(token: Token, instance: object): void {
+        this.definitions.set(token, {
+            dependencies: [],
+            factory: () => instance,
+            scope: "singleton",
+            stereoType: "",
+            target: instance.constructor as DefaultClass,
+            token: token,
+        });
     }
 
     public resolveBean<T extends object>(bean: BeanDefinition): T {
